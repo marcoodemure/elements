@@ -11,6 +11,7 @@
     align-items: center;
     height: 100vh;
     background: #000000;
+    overflow: hidden;
   }
 
   .scene {
@@ -56,22 +57,36 @@
 const card = document.getElementById("card");
 const img = document.getElementById("shirt-img");
 
+// Rotation
 let angleY = 0;
 let tiltX = 0;
 let tiltY = 0;
-let isHovering = false;
-let isMoving = false;
+
+// Drag
 let isDragging = false;
 let startX = 0;
 let startAngle = 0;
 
-// Disable native dragstart on image
+// Hover/tilt
+let isHovering = false;
+let isMoving = false;
+
+// Zoom
+let scale = 1;
+const MIN_SCALE = 0.7;
+const MAX_SCALE = 1.6;
+let offsetX = 0;
+let offsetY = 0;
+
+// Disable native drag
 img.addEventListener("dragstart", e => e.preventDefault());
 
+// Clamp helper
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
 }
 
+// Mouse movement for tilt
 let moveTimeout;
 document.addEventListener("mousemove", e => {
   if (!isDragging && isHovering) {
@@ -90,6 +105,7 @@ card.addEventListener("mouseleave", () => {
   tiltY = 0;
 });
 
+// Drag rotation
 card.addEventListener("mousedown", e => {
   isDragging = true;
   startX = e.clientX;
@@ -110,6 +126,7 @@ document.addEventListener("mouseup", () => {
   }
 });
 
+// Touch drag
 card.addEventListener("touchstart", e => {
   isDragging = true;
   startX = e.touches[0].clientX;
@@ -126,11 +143,35 @@ document.addEventListener("touchend", () => {
   isDragging = false;
 });
 
+// Scroll-to-zoom (mouse-centered)
+card.addEventListener("wheel", e => {
+  e.preventDefault();
+  const zoomIntensity = 0.0015;
+  const oldScale = scale;
+  scale -= e.deltaY * zoomIntensity;
+  scale = clamp(scale, MIN_SCALE, MAX_SCALE);
+
+  const rect = card.getBoundingClientRect();
+  const mouseX = e.clientX - rect.left;
+  const mouseY = e.clientY - rect.top;
+
+  offsetX += (mouseX - rect.width / 2) * (1 - scale / oldScale);
+  offsetY += (mouseY - rect.height / 2) * (1 - scale / oldScale);
+}, { passive: false });
+
+// Animation loop
 function animate() {
   if (!isDragging && !isHovering && !isMoving) {
-    angleY += 0.3; // auto-spin when idle
+    angleY += 0.3; // auto-spin
   }
-  card.style.transform = `rotateY(${angleY + tiltY}deg) rotateX(${tiltX}deg)`;
+
+  card.style.transform = `
+    translate(${offsetX}px, ${offsetY}px)
+    rotateY(${angleY + tiltY}deg)
+    rotateX(${tiltX}deg)
+    scale(${scale})
+  `;
+
   requestAnimationFrame(animate);
 }
 
