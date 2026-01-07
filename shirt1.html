@@ -163,9 +163,17 @@ card.addEventListener("wheel", e => {
   const mouseX = e.clientX - rect.left;
   const mouseY = e.clientY - rect.top;
 
-  targetOffsetX += (mouseX - rect.width / 2) * (1 - targetScale / oldScale);
-  targetOffsetY += (mouseY - rect.height / 2) * (1 - targetScale / oldScale);
+  if (e.deltaY < 0) {
+    // Zoom in: follow mouse
+    targetOffsetX += (mouseX - rect.width / 2) * (1 - targetScale / oldScale);
+    targetOffsetY += (mouseY - rect.height / 2) * (1 - targetScale / oldScale);
+  } else {
+    // Zoom out: anchor to center
+    targetOffsetX = 0;
+    targetOffsetY = 0;
+  }
 }, { passive: false });
+
 
 // Auto-scale to window
 function updateBaseScale() {
