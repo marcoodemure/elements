@@ -4,14 +4,13 @@
 <meta charset="UTF-8" />
 <title>Interactive 3D T-Shirt</title>
 <style>
-  body {
+  html, body {
     margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: #000000;
+    padding: 0;
+    background: transparent; /* fully transparent for embedding */
     overflow: hidden;
+    width: 100%;
+    height: 100%;
   }
 
   .scene {
@@ -26,9 +25,9 @@
   .card {
     transform-style: preserve-3d;
     cursor: grab;
-    width: 30vw;        /* responsive width */
-    max-width: 400px;   /* don't exceed 400px */
-    min-width: 200px;   /* don't go below 200px */
+    width: 30vw;        /* responsive */
+    max-width: 400px;
+    min-width: 200px;
   }
 
   .card img {
@@ -149,14 +148,14 @@ document.addEventListener("touchend", () => {
   isDragging = false;
 });
 
-// Scroll-to-zoom (zoom-in follows mouse, zoom-out anchors to default size)
+// Scroll-to-zoom (zoom-in follows mouse, zoom-out returns to default)
 card.addEventListener("wheel", e => {
   e.preventDefault();
   const zoomIntensity = 0.0015;
   const oldScale = targetScale;
 
   if (e.deltaY < 0) {
-    // Zoom in: follow mouse
+    // Zoom in: mouse-centered
     targetScale += -e.deltaY * zoomIntensity; 
     targetScale = clamp(targetScale, BASE_SCALE, MAX_SCALE);
 
@@ -167,7 +166,7 @@ card.addEventListener("wheel", e => {
     targetOffsetX += (mouseX - rect.width / 2) * (1 - targetScale / oldScale);
     targetOffsetY += (mouseY - rect.height / 2) * (1 - targetScale / oldScale);
   } else {
-    // Zoom out: always back to default size
+    // Zoom out: return to default size & center
     targetScale = BASE_SCALE;
     targetOffsetX = 0;
     targetOffsetY = 0;
