@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Interactive 3D T-Shirt</title>
+<style>
+  body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #000000;
+  }
+
+  .scene {
+    perspective: 800px;
+  }
+
+  .card {
+    width: 300px;
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease-out;
+    cursor: grab;
+  }
+
+  .card img {
+    width: 100%;
+    display: block;
+    filter: drop-shadow(0 25px 20px rgba(0,0,0,0.25));
+    box-shadow: 0 20px 30px rgba(0,0,0,0.3);
+    transition: transform 0.2s ease-out, filter 0.2s ease-out;
+    user-select: none;
+    -webkit-user-drag: none;
+    user-drag: none;
+  }
+
+  .card img:hover {
+    transform: scale(1.05);
+  }
+</style>
+</head>
+<body>
+  <div class="scene">
+    <div class="card" id="card">
+      <img
+        src="shirt.png"
+        alt="T-shirt"
+        id="shirt-img"
+        draggable="false"
+      />
+    </div>
+  </div>
+
+<script>
+const card = document.getElementById("card");
+const img = document.getElementById("shirt-img");
+
+let angleY = 0;
+let tiltX = 0;
+let tiltY = 0;
+let isHovering = false;
+let isMoving = false;
+let isDragging = false;
+let startX = 0;
+let startAngle = 0;
+
+// Disable native dragstart on image
+img.addEventListener("dragstart", e => e.preventDefault());
+
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max);
+}
+
+let moveTimeout;
+document.addEventListener("mousemove", e => {
+  if (!isDragging && isHovering) {
+    tiltX = clamp((window.innerHeight / 2 - e.clientY) / 20, -15, 15);
+    tiltY = clamp((e.clientX - window.innerWidth / 2) / 20, -15, 15);
+  }
+  isMoving = true;
+  clearTimeout(moveTimeout);
+  moveTimeout = setTimeout(() => (isMoving = false), 100);
+});
+
+card.addEventListener("mouseenter", () => (isHovering = true));
+card.addEventListener("mouseleave", () => {
+  isHovering = false;
+  tiltX = 0;
+  tiltY = 0;
+});
+
+card.addEventListener("mousedown", e => {
+  isDragging = true;
+  startX = e.clientX;
+  startAngle = angleY;
+  card.style.cursor = "grabbing";
+});
+
+document.addEventListener("mousemove", e => {
+  if (!isDragging) return;
+  const deltaX = e.clientX - startX;
+  angleY = startAngle + deltaX / 2;
+});
+
+document.addEventListener("mouseup", () => {
+  if (isDragging) {
+    isDragging = false;
+    card.style.cursor = "grab";
+  }
+});
+
+card.addEventListener("touchstart", e => {
+  isDragging = true;
+  startX = e.touches[0].clientX;
+  startAngle = angleY;
+});
+
+document.addEventListener("touchmove", e => {
+  if (!isDragging) return;
+  const deltaX = e.touches[0].clientX - startX;
+  angleY = startAngle + deltaX / 2;
+});
+
+document.addEventListener("touchend", () => {
+  isDragging = false;
+});
+
+function animate() {
+  if (!isDragging && !isHovering && !isMoving) {
+    angleY += 0.3; // auto-spin when idle
+  }
+  card.style.transform = `rotateY(${angleY + tiltY}deg) rotateX(${tiltX}deg)`;
+  requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+</body>
+</html>
