@@ -4,33 +4,31 @@
 <meta charset="UTF-8" />
 <title>Interactive 3D T-Shirt</title>
 <style>
-html, body {
-  margin: 0;
-  padding: 0;
-  background: transparent;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent; /* fully transparent for embedding */
+    overflow: hidden;
+  }
 
+  .scene {
+    width: 100%;
+    height: 100%;
+    perspective: 800px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-.scene {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  perspective: 800px;
-}
-
-.card {
-  width: 100%;         /* fill the container */
-  max-width: 100%;     /* never exceed container */
-  min-width: 0;        /* shrink if needed */
-  transform-style: preserve-3d;
-  cursor: grab;
-}
-
+  .card {
+    transform-style: preserve-3d;
+    cursor: grab;
+    width: 100%;       /* fill the container */
+    max-width: 100%;
+    min-width: 0;
+  }
 
   .card img {
     width: 100%;
