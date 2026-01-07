@@ -26,7 +26,7 @@
   .card {
     transform-style: preserve-3d;
     cursor: grab;
-    width: 30vw;        /* auto responsive width */
+    width: 30vw;        /* responsive width */
     max-width: 400px;   /* don't exceed 400px */
     min-width: 200px;   /* don't go below 200px */
   }
@@ -76,13 +76,12 @@ let isMoving = false;
 let scale = 1;
 let offsetX = 0;
 let offsetY = 0;
-
 let targetScale = 1;
 let targetOffsetX = 0;
 let targetOffsetY = 0;
 
-const MIN_SCALE = 0.7;
-const MAX_SCALE = 2.0; // slightly bigger since auto-scaling
+const BASE_SCALE = 1; // default size
+const MAX_SCALE = 2.0; // maximum zoom-in
 const zoomEase = 0.1;
 
 // Disable native drag
@@ -150,43 +149,30 @@ document.addEventListener("touchend", () => {
   isDragging = false;
 });
 
-// Scroll-to-zoom (mouse-centered with easing)
+// Scroll-to-zoom (zoom-in follows mouse, zoom-out anchors to default size)
 card.addEventListener("wheel", e => {
   e.preventDefault();
   const zoomIntensity = 0.0015;
-
   const oldScale = targetScale;
-  targetScale -= e.deltaY * zoomIntensity;
-  targetScale = clamp(targetScale, MIN_SCALE, MAX_SCALE);
-
-  const rect = card.getBoundingClientRect();
-  const mouseX = e.clientX - rect.left;
-  const mouseY = e.clientY - rect.top;
 
   if (e.deltaY < 0) {
     // Zoom in: follow mouse
+    targetScale += -e.deltaY * zoomIntensity; 
+    targetScale = clamp(targetScale, BASE_SCALE, MAX_SCALE);
+
+    const rect = card.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
     targetOffsetX += (mouseX - rect.width / 2) * (1 - targetScale / oldScale);
     targetOffsetY += (mouseY - rect.height / 2) * (1 - targetScale / oldScale);
   } else {
-    // Zoom out: anchor to center
+    // Zoom out: always back to default size
+    targetScale = BASE_SCALE;
     targetOffsetX = 0;
     targetOffsetY = 0;
   }
 }, { passive: false });
-
-
-// Auto-scale to window
-function updateBaseScale() {
-  const rect = card.getBoundingClientRect();
-  const widthRatio = window.innerWidth / rect.width * 0.6; // 60% of screen width
-  const heightRatio = window.innerHeight / rect.height * 0.6; // 60% of screen height
-  const newBaseScale = clamp(Math.min(widthRatio, heightRatio), MIN_SCALE, MAX_SCALE);
-
-  targetScale = newBaseScale;
-}
-
-window.addEventListener('resize', updateBaseScale);
-updateBaseScale();
 
 // Animation loop
 function animate() {
