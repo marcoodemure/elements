@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>Logo Hover Zoom</title>
+<title>Clickable Logo</title>
 
 <style>
   html, body {
@@ -25,23 +25,28 @@
   .card {
     width: 100%;
     max-width: 100%;
-    touch-action: none; /* prevents mobile drag/long-press */
+    touch-action: manipulation; /* allow tap, block drag */
+  }
+
+  .card a {
+    display: block;
   }
 
   .card img {
     width: 100%;
     display: block;
+
     user-select: none;
     -webkit-user-drag: none;
 
-    /* Shadow */
+    /* Base shadow */
     filter: drop-shadow(0 25px 20px rgba(0,0,0,0.25));
     box-shadow: 0 20px 30px rgba(0,0,0,0.3);
 
-    /* Smooth hover */
+    /* Smooth interaction */
     transition:
-      transform 0.25s ease,
-      filter 0.25s ease;
+      transform 0.2s ease,
+      filter 0.2s ease;
   }
 
   /* Hover zoom (desktop) */
@@ -51,13 +56,27 @@
       filter: drop-shadow(0 35px 30px rgba(0,0,0,0.35));
     }
   }
+
+  /* Tap feedback (mobile) */
+  .card img:active {
+    transform: scale(0.97);
+    filter: drop-shadow(0 15px 15px rgba(0,0,0,0.25));
+  }
 </style>
 </head>
 
 <body>
   <div class="scene">
     <div class="card">
-      <img src="logo.svg" alt="Logo" draggable="false" />
+      <a href="https://marcoodemure.github.io/" target="_top" aria-label="Go to homepage">
+        <img
+          src="logo.svg"
+          alt="Logo"
+          loading="lazy"
+          decoding="async"
+          draggable="false"
+        />
+      </a>
     </div>
   </div>
 </body>
