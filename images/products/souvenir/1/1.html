@@ -33,6 +33,11 @@ html, body {
   overflow: hidden;
   position: relative;
   touch-action: pan-y;
+  cursor: grab;
+}
+
+.carousel:active {
+  cursor: grabbing;
 }
 
 .track {
@@ -48,16 +53,17 @@ html, body {
   padding: 10px;
 }
 
-/* Image */
+/* Image (NON-DRAGGABLE) */
 .card img {
   width: 100%;
   display: block;
   user-select: none;
   -webkit-user-drag: none;
+  pointer-events: none; /* critical */
   transition: transform 0.2s ease;
 }
 
-/* Hover lift only (no shadow) */
+/* Hover lift (desktop only) */
 @media (hover: hover) {
   .card img:hover {
     transform: scale(1.05);
@@ -92,9 +98,15 @@ html, body {
 <div class="scene">
   <div class="carousel">
     <div class="track">
-      <div class="card"><img src="1.png" alt="Product 1"></div>
-      <div class="card"><img src="2.png" alt="Product 2"></div>
-      <div class="card"><img src="3.png" alt="Product 3"></div>
+      <div class="card">
+        <img src="1.png" alt="Product 1" draggable="false">
+      </div>
+      <div class="card">
+        <img src="2.png" alt="Product 2" draggable="false">
+      </div>
+      <div class="card">
+        <img src="3.png" alt="Product 3" draggable="false">
+      </div>
     </div>
   </div>
 
@@ -111,6 +123,13 @@ let index = 0;
 let startX = 0;
 let currentX = 0;
 let isDragging = false;
+
+/* Prevent native image drag globally */
+document.addEventListener('dragstart', e => {
+  if (e.target.tagName === 'IMG') {
+    e.preventDefault();
+  }
+});
 
 /* Create dots */
 slides.forEach((_, i) => {
@@ -133,7 +152,7 @@ function updateCarousel() {
   dots[index].classList.add('active');
 }
 
-/* Swipe / drag */
+/* Swipe / drag logic */
 function startDrag(x) {
   startX = x;
   isDragging = true;
@@ -160,7 +179,7 @@ function endDrag() {
   updateCarousel();
 }
 
-/* Touch */
+/* Touch events */
 carousel.addEventListener('touchstart', e =>
   startDrag(e.touches[0].clientX)
 );
@@ -169,7 +188,7 @@ carousel.addEventListener('touchmove', e =>
 );
 carousel.addEventListener('touchend', endDrag);
 
-/* Mouse */
+/* Mouse events */
 carousel.addEventListener('mousedown', e =>
   startDrag(e.clientX)
 );
