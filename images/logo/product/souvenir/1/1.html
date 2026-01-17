@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>Swipe Carousel (Google Sites Safe)</title>
+<title>Clean Swipe Carousel</title>
 
 <style>
 * {
@@ -27,7 +27,7 @@ html, body {
   position: relative;
 }
 
-/* Carousel container */
+/* Carousel */
 .carousel {
   width: 100%;
   overflow: hidden;
@@ -45,29 +45,22 @@ html, body {
   min-width: 100%;
   display: flex;
   justify-content: center;
-  overflow: hidden;
+  padding: 10px;
 }
 
-/* Shadow-safe wrapper */
-.image-wrap {
-  width: 100%;
-  overflow: hidden;
-  border-radius: 12px;
-  box-shadow: 0 20px 30px rgba(0,0,0,0.3);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.image-wrap img {
+/* Image */
+.card img {
   width: 100%;
   display: block;
   user-select: none;
   -webkit-user-drag: none;
+  transition: transform 0.2s ease;
 }
 
+/* Hover lift only (no shadow) */
 @media (hover: hover) {
-  .image-wrap:hover {
+  .card img:hover {
     transform: scale(1.05);
-    box-shadow: 0 35px 40px rgba(0,0,0,0.35);
   }
 }
 
@@ -99,21 +92,9 @@ html, body {
 <div class="scene">
   <div class="carousel">
     <div class="track">
-      <div class="card">
-        <div class="image-wrap">
-          <img src="1.png" alt="Product 1">
-        </div>
-      </div>
-      <div class="card">
-        <div class="image-wrap">
-          <img src="2.png" alt="Product 2">
-        </div>
-      </div>
-      <div class="card">
-        <div class="image-wrap">
-          <img src="3.png" alt="Product 3">
-        </div>
-      </div>
+      <div class="card"><img src="1.png" alt="Product 1"></div>
+      <div class="card"><img src="2.png" alt="Product 2"></div>
+      <div class="card"><img src="3.png" alt="Product 3"></div>
     </div>
   </div>
 
@@ -152,7 +133,7 @@ function updateCarousel() {
   dots[index].classList.add('active');
 }
 
-/* Swipe logic */
+/* Swipe / drag */
 function startDrag(x) {
   startX = x;
   isDragging = true;
