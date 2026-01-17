@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Clean Swipe Carousel</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+}
+
+.scene {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* Carousel */
+.carousel {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  touch-action: pan-y;
+}
+
+.track {
+  display: flex;
+  transition: transform 0.35s ease;
+}
+
+/* Slide */
+.card {
+  min-width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+/* Image */
+.card img {
+  width: 100%;
+  display: block;
+  user-select: none;
+  user-drag: none
+  -webkit-user-drag: none;
+  transition: transform 0.2s ease;
+}
+
+/* Hover lift only (no shadow) */
+@media (hover: hover) {
+  .card img:hover {
+    transform: scale(1.05);
+  }
+}
+
+/* Dots */
+.dots {
+  position: absolute;
+  bottom: 10px;
+  display: flex;
+  gap: 8px;
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+}
+
+.dot.active {
+  background: white;
+  transform: scale(1.3);
+}
+</style>
+</head>
+
+<body>
+<div class="scene">
+  <div class="carousel">
+    <div class="track">
+      <div class="card"><img src="1.png" alt="Product 1" draggable="false"></div>
+      <div class="card"><img src="2.png" alt="Product 2" draggable="false"></div>
+      <div class="card"><img src="3.png" alt="Product 2" draggable="false"></div>
+    </div>
+  </div>
+
+  <div class="dots"></div>
+</div>
+
+<script>
+const carousel = document.querySelector('.carousel');
+const track = document.querySelector('.track');
+const slides = document.querySelectorAll('.card');
+const dotsContainer = document.querySelector('.dots');
+
+let index = 0;
+let startX = 0;
+let currentX = 0;
+let isDragging = false;
+
+/* Create dots */
+slides.forEach((_, i) => {
+  const dot = document.createElement('div');
+  dot.className = 'dot';
+  if (i === 0) dot.classList.add('active');
+  dot.addEventListener('click', () => {
+    index = i;
+    updateCarousel();
+  });
+  dotsContainer.appendChild(dot);
+});
+
+const dots = document.querySelectorAll('.dot');
+
+function updateCarousel() {
+  track.style.transition = 'transform 0.35s ease';
+  track.style.transform = `translateX(-${index * 100}%)`;
+  dots.forEach(dot => dot.classList.remove('active'));
+  dots[index].classList.add('active');
+}
+
+/* Swipe / drag */
+function startDrag(x) {
+  startX = x;
+  isDragging = true;
+  track.style.transition = 'none';
+}
+
+function drag(x) {
+  if (!isDragging) return;
+  currentX = x - startX;
+  track.style.transform =
+    `translateX(calc(-${index * 100}% + ${currentX}px))`;
+}
+
+function endDrag() {
+  if (!isDragging) return;
+  isDragging = false;
+
+  if (Math.abs(currentX) > 50) {
+    if (currentX < 0 && index < slides.length - 1) index++;
+    if (currentX > 0 && index > 0) index--;
+  }
+
+  currentX = 0;
+  updateCarousel();
+}
+
+/* Touch */
+carousel.addEventListener('touchstart', e =>
+  startDrag(e.touches[0].clientX)
+);
+carousel.addEventListener('touchmove', e =>
+  drag(e.touches[0].clientX)
+);
+carousel.addEventListener('touchend', endDrag);
+
+/* Mouse */
+carousel.addEventListener('mousedown', e =>
+  startDrag(e.clientX)
+);
+carousel.addEventListener('mousemove', e =>
+  drag(e.clientX)
+);
+carousel.addEventListener('mouseup', endDrag);
+carousel.addEventListener('mouseleave', endDrag);
+</script>
+</body>
+</html>
