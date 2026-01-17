@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>Image Carousel with Dots</title>
+<title>Image Carousel with Auto-Hide Arrows</title>
 
 <style>
 * {
@@ -61,39 +61,53 @@ html, body {
   }
 }
 
-/* Arrows */
+/* Arrows (small + auto-hide) */
 .arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.55);
   color: white;
   border: none;
-  font-size: 28px;
-  padding: 10px 16px;
+  font-size: 18px;
+  width: 34px;
+  height: 34px;
   cursor: pointer;
   z-index: 10;
   border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
 }
 
-.arrow:hover {
-  background: rgba(0,0,0,0.8);
+.arrow.left { left: 8px; }
+.arrow.right { right: 8px; }
+
+/* Show arrows on hover (desktop) */
+.scene:hover .arrow {
+  opacity: 1;
+  pointer-events: auto;
 }
 
-.arrow.left { left: 10px; }
-.arrow.right { right: 10px; }
+/* Always allow tap on mobile */
+@media (hover: none) {
+  .arrow {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
 
 /* Dots */
 .dots {
   position: absolute;
-  bottom: 12px;
+  bottom: 10px;
   display: flex;
   gap: 8px;
 }
 
 .dot {
-  width: 10px;
-  height: 10px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   background: rgba(255,255,255,0.5);
   cursor: pointer;
@@ -136,7 +150,7 @@ let index = 0;
 /* Create dots */
 slides.forEach((_, i) => {
   const dot = document.createElement('div');
-  dot.classList.add('dot');
+  dot.className = 'dot';
   if (i === 0) dot.classList.add('active');
   dot.addEventListener('click', () => {
     index = i;
