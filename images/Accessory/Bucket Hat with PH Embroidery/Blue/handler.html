@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Swiper Clickable Slides</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+/>
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+.swiper { width: 100%; }
+
+.swiper-slide img {
+  width: 100%;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+/* Hover zoom effect */
+.swiper-slide img:hover {
+  transform: scale(1.10);
+}
+</style>
+</head>
+
+<body>
+
+<div class="swiper">
+  <div class="swiper-wrapper">
+    <div class="swiper-slide"><img src="1.png" alt="Slide 1"></div>
+    <div class="swiper-slide"><img src="2.png" alt="Slide 2"></div>
+  </div>
+  <div class="swiper-pagination"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+const swiper = new Swiper('.swiper', {
+  slidesPerView: 1,
+  pagination: { el: '.swiper-pagination', clickable: true },
+});
+
+const hyperlink = "https://www.google.com";
+
+const images = document.querySelectorAll('.swiper-slide img');
+
+images.forEach(img => {
+  img.addEventListener('click', () => {
+    window.location.href = hyperlink;
+  });
+});
+</script>
+
+</body>
+</html>
