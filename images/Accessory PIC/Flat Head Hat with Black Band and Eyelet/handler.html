@@ -124,20 +124,11 @@ const dots = document.querySelectorAll('.dot');
 const hyperlink = "https://sites.google.com/view/habitlikha/accessories/hab%C3%AC-sol-weave-straw-hat";
 const images = document.querySelectorAll('.card img');
 
-function navigateInSameTab(url) {
-  if (!url) return;
-
-  try {
-    window.top.location.href = url;
-  } catch (e) {
-    window.location.href = url;
-  }
-}
-
 images.forEach(img => {
   img.addEventListener('dragstart', e => e.preventDefault());
   img.addEventListener('click', () => {
-    navigateInSameTab(hyperlink);
+    if (!hyperlink) return;
+    window.open(hyperlink, '_blank', 'noopener,noreferrer');
   });
 });
 function updateCarousel() {
@@ -191,6 +182,7 @@ carousel.addEventListener('mouseleave', endDrag);
 </script>
 </body>
 </html>
+
 
 
 
