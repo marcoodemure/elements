@@ -46,18 +46,44 @@ html, body {
   padding: 10px;
 }
 
-.card img {
+.media {
+  width: 100%;
+  transform: translateX(0) scale(1);
+  opacity: 1;
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.media.loading {
+  min-height: 220px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.22) 50%, rgba(255,255,255,0.08) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s linear infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.media img {
   width: 100%;
   display: block;
   user-select: none;
   user-drag: none;
   -webkit-user-drag: none;
-  transition: transform 0.2s ease;
+  opacity: 0;
+  transition: opacity 0.35s ease, transform 0.2s ease;
+}
+
+.media.loaded img,
+.media.error img {
+  opacity: 1;
 }
 
 @media (hover: hover) {
-  .card img:hover {
-    transform: scale(1.05);
+  .media.loaded img:hover {
+    transform: scale(1.04);
   }
 }
 
@@ -88,10 +114,10 @@ html, body {
 <div class="scene">
   <div class="carousel">
     <div class="track">
-      <div class="card"><img src="1.png" alt="Product 1" draggable="false"></div>
-      <div class="card"><img src="2.png" alt="Product 2" draggable="false"></div>
-      <div class="card"><img src="3.png" alt="Product 3" draggable="false"></div>
-      <div class="card"><img src="4.png" alt="Product 4" draggable="false"></div>
+      <div class="card"><div class="media loading"><img src="1.png" alt="Product 1" loading="lazy" draggable="false"></div></div>
+      <div class="card"><div class="media loading"><img src="2.png" alt="Product 2" loading="lazy" draggable="false"></div></div>
+      <div class="card"><div class="media loading"><img src="3.png" alt="Product 3" loading="lazy" draggable="false"></div></div>
+      <div class="card"><div class="media loading"><img src="4.png" alt="Product 4" loading="lazy" draggable="false"></div></div>
     </div>
   </div>
 
@@ -101,15 +127,42 @@ html, body {
 <script>
 const carousel = document.querySelector('.carousel');
 const track = document.querySelector('.track');
-const slides = document.querySelectorAll('.card');
+const cards = Array.from(document.querySelectorAll('.card'));
+const mediaItems = Array.from(document.querySelectorAll('.media'));
 const dotsContainer = document.querySelector('.dots');
+
+const hyperlink = "https://sites.google.com/view/habitlikha/accessories/hab%C3%AC-lakan-slip-on-sandals";
+const images = Array.from(document.querySelectorAll('.card img'));
+
+const SWIPE_THRESHOLD = 50;
+const TAP_DRAG_THRESHOLD = 12;
 
 let index = 0;
 let startX = 0;
 let currentX = 0;
+let dragDistance = 0;
 let isDragging = false;
+let suppressClickUntil = 0;
 
-slides.forEach((_, i) => {
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max);
+}
+
+function applyParallax() {
+  const dragInfluence = clamp(currentX / 80, -8, 8);
+
+  mediaItems.forEach((media, i) => {
+    const offset = i - index;
+    const shift = (offset * 10) - dragInfluence;
+    const scale = i === index ? 1 : 0.985;
+    const opacity = i === index ? 1 : 0.94;
+
+    media.style.transform = `translateX(${shift}px) scale(${scale})`;
+    media.style.opacity = `${opacity}`;
+  });
+}
+
+cards.forEach((_, i) => {
   const dot = document.createElement('div');
   dot.className = 'dot';
   if (i === 0) dot.classList.add('active');
@@ -122,25 +175,18 @@ slides.forEach((_, i) => {
 
 const dots = document.querySelectorAll('.dot');
 
-const hyperlink = "https://sites.google.com/view/habitlikha/accessories/hab%C3%AC-lakan-slip-on-sandals";
-const images = document.querySelectorAll('.card img');
-
-images.forEach(img => {
-  img.addEventListener('dragstart', e => e.preventDefault());
-  img.addEventListener('click', () => {
-    if (!hyperlink) return;
-    window.open(hyperlink, '_blank', 'noopener,noreferrer');
-  });
-});
 function updateCarousel() {
   track.style.transition = 'transform 0.35s ease';
   track.style.transform = `translateX(-${index * 100}%)`;
   dots.forEach(dot => dot.classList.remove('active'));
   dots[index].classList.add('active');
+  applyParallax();
 }
 
 function startDrag(x) {
   startX = x;
+  currentX = 0;
+  dragDistance = 0;
   isDragging = true;
   track.style.transition = 'none';
 }
@@ -148,21 +194,51 @@ function startDrag(x) {
 function drag(x) {
   if (!isDragging) return;
   currentX = x - startX;
+  dragDistance = Math.max(dragDistance, Math.abs(currentX));
   track.style.transform = `translateX(calc(-${index * 100}% + ${currentX}px))`;
+  applyParallax();
 }
 
 function endDrag() {
   if (!isDragging) return;
   isDragging = false;
 
-  if (Math.abs(currentX) > 50) {
-    if (currentX < 0 && index < slides.length - 1) index++;
+  if (Math.abs(currentX) > SWIPE_THRESHOLD) {
+    if (currentX < 0 && index < cards.length - 1) index++;
     if (currentX > 0 && index > 0) index--;
+  }
+
+  if (dragDistance > TAP_DRAG_THRESHOLD) {
+    suppressClickUntil = Date.now() + 250;
   }
 
   currentX = 0;
   updateCarousel();
 }
+
+function markMediaReady(img, isError) {
+  const media = img.closest('.media');
+  if (!media) return;
+  media.classList.remove('loading');
+  media.classList.add(isError ? 'error' : 'loaded');
+}
+
+images.forEach(img => {
+  img.addEventListener('dragstart', e => e.preventDefault());
+
+  if (img.complete && img.naturalWidth > 0) {
+    markMediaReady(img, false);
+  } else {
+    img.addEventListener('load', () => markMediaReady(img, false), { once: true });
+    img.addEventListener('error', () => markMediaReady(img, true), { once: true });
+  }
+
+  img.addEventListener('click', () => {
+    if (Date.now() < suppressClickUntil) return;
+    if (!hyperlink) return;
+    window.open(hyperlink, '_blank', 'noopener,noreferrer');
+  });
+});
 
 carousel.addEventListener('touchstart', e =>
   startDrag(e.touches[0].clientX)
@@ -180,12 +256,8 @@ carousel.addEventListener('mousemove', e =>
 );
 carousel.addEventListener('mouseup', endDrag);
 carousel.addEventListener('mouseleave', endDrag);
+
+updateCarousel();
 </script>
 </body>
 </html>
-
-
-
-
-
-
