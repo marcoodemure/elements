@@ -134,14 +134,7 @@ function navigateInSameTab(url) {
   if (!url) return;
 
   try {
-    const anchor = document.createElement('a');
-    anchor.href = url;
-    anchor.target = '_top';
-    anchor.rel = 'noopener noreferrer';
-    anchor.style.display = 'none';
-    document.body.appendChild(anchor);
-    anchor.click();
-    anchor.remove();
+    window.top.location.href = url;
   } catch (e) {
     window.location.href = url;
   }
@@ -204,6 +197,7 @@ carousel.addEventListener('mouseleave', endDrag);
 </script>
 </body>
 </html>
+
 
 
 
