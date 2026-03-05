@@ -124,11 +124,27 @@ const dots = document.querySelectorAll('.dot');
 const hyperlink = "https://www.google.com";
 const images = document.querySelectorAll('.card img');
 
+function navigateInSameTab(url) {
+  if (!url) return;
+
+  try {
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.target = '_top';
+    anchor.rel = 'noopener noreferrer';
+    anchor.style.display = 'none';
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+  } catch (e) {
+    window.location.href = url;
+  }
+}
+
 images.forEach(img => {
   img.addEventListener('dragstart', e => e.preventDefault());
   img.addEventListener('click', () => {
-    if (!hyperlink) return;
-    window.location.href = hyperlink;
+    navigateInSameTab(hyperlink);
   });
 });
 function updateCarousel() {
@@ -182,6 +198,7 @@ carousel.addEventListener('mouseleave', endDrag);
 </script>
 </body>
 </html>
+
 
 
 
