@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Customer Feedback Scroll</title>
+<style>
+  :root {
+    --summary-w: 220px;
+    --card-w: 290px;
+    --gap: 18px;
+    --speed: 34s;
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    overflow: hidden;
+  }
+
+  body {
+    font-family: "Poppins", "Trebuchet MS", "Segoe UI", sans-serif;
+    color: #1e1e1e;
+  }
+
+  .feedback-strip {
+    width: 100%;
+    height: 100%;
+    min-height: 210px;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: minmax(170px, var(--summary-w)) 1fr;
+    gap: 16px;
+    align-items: center;
+    padding: 10px 12px;
+  }
+
+  .summary {
+    padding: 4px 8px;
+  }
+
+  .summary h2 {
+    margin: 0 0 8px;
+    font-size: clamp(1.1rem, 2.1vw, 1.8rem);
+    line-height: 1.15;
+    letter-spacing: 0.2px;
+  }
+
+  .summary .stars {
+    font-size: 1.25rem;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+
+  .summary .meta {
+    margin: 0;
+    font-size: 0.82rem;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    opacity: 0.8;
+  }
+
+  .scroller {
+    width: 100%;
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%);
+  }
+
+  .track {
+    width: max-content;
+    display: flex;
+    gap: var(--gap);
+    animation: feedback-scroll var(--speed) linear infinite;
+    will-change: transform;
+  }
+
+  .card {
+    width: var(--card-w);
+    min-height: 175px;
+    box-sizing: border-box;
+    border-radius: 14px;
+    padding: 12px 14px;
+    flex: 0 0 auto;
+    border: 1px solid rgba(22, 22, 22, 0.2);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(1px);
+  }
+
+  .card .stars {
+    font-size: 1rem;
+    letter-spacing: 2px;
+    margin-bottom: 7px;
+  }
+
+  .card h3 {
+    margin: 0 0 7px;
+    font-size: 1.05rem;
+    line-height: 1.25;
+  }
+
+  .card p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.45;
+    opacity: 0.92;
+  }
+
+  .card .author {
+    margin-top: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.2px;
+  }
+
+  @keyframes feedback-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (max-width: 900px) {
+    :root {
+      --card-w: 240px;
+      --speed: 28s;
+    }
+
+    .feedback-strip {
+      grid-template-columns: 1fr;
+      gap: 8px;
+      padding-top: 8px;
+    }
+  }
+</style>
+</head>
+<body>
+  <section class="feedback-strip" aria-label="Customer feedback">
+    <div class="summary">
+      <h2>Love From Our Customers</h2>
+      <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p class="meta">Inspired by culture. Designed for life.</p>
+    </div>
+    <div class="scroller">
+      <div class="track">
+        <article class="card" aria-label="Customer review by Tessa S.">
+          <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <h3>Craftsmanship you can feel</h3>
+          <p>Every order feels intentional and artistic. Habi`t Likha really lives up to celebrating craftsmanship and culture.</p>
+          <p class="author">Tessa S.</p>
+        </article>
+        <article class="card" aria-label="Customer review by Jeff M.">
+          <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <h3>Designed for daily life</h3>
+          <p>I like how the products are both meaningful and useful. You can see the "Designed for life" vibe in every piece.</p>
+          <p class="author">Jeff M.</p>
+        </article>
+        <article class="card" aria-label="Customer review by A.A.">
+          <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <h3>Great variety in one place</h3>
+          <p>From foods to accessories, bags, shirts, and souvenirs, everything feels thoughtfully made and culturally rooted.</p>
+          <p class="author">A.A.</p>
+        </article>
+        <article class="card" aria-label="Customer review by Monique C.">
+          <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <h3>Authentic Filipino style</h3>
+          <p>Quality and authenticity stand out right away. The designs feel creative but still practical for everyday use.</p>
+          <p class="author">Monique C.</p>
+        </article>
+        <article class="card" aria-label="Customer review by Rico P.">
+          <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <h3>Best-seller picks are solid</h3>
+          <p>I ordered from the best sellers and got exactly what I hoped for. Great finish, clean details, and premium feel.</p>
+          <p class="author">Rico P.</p>
+        </article>
+        <article class="card" aria-label="Customer review by Lea D.">
+          <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <h3>Purposeful shopping experience</h3>
+          <p>This shop makes it easy to support local artistry while finding gifts that still look modern and stylish.</p>
+          <p class="author">Lea D.</p>
+        </article>
+
+        <article class="card" aria-label="Customer review by Tessa S.">
+          <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <h3>Craftsmanship you can feel</h3>
+          <p>Every order feels intentional and artistic. Habi`t Likha really lives up to celebrating craftsmanship and culture.</p>
+          <p class="author">Tessa S.</p>
+        </article>
+        <article class="card" aria-label="Customer review by Jeff M.">
+          <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <h3>Designed for daily life</h3>
+          <p>I like how the products are both meaningful and useful. You can see the "Designed for life" vibe in every piece.</p>
+          <p class="author">Jeff M.</p>
+        </article>
+        <article class="card" aria-label="Customer review by A.A.">
+          <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <h3>Great variety in one place</h3>
+          <p>From foods to accessories, bags, shirts, and souvenirs, everything feels thoughtfully made and culturally rooted.</p>
+          <p class="author">A.A.</p>
+        </article>
+        <article class="card" aria-label="Customer review by Monique C.">
+          <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <h3>Authentic Filipino style</h3>
+          <p>Quality and authenticity stand out right away. The designs feel creative but still practical for everyday use.</p>
+          <p class="author">Monique C.</p>
+        </article>
+        <article class="card" aria-label="Customer review by Rico P.">
+          <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <h3>Best-seller picks are solid</h3>
+          <p>I ordered from the best sellers and got exactly what I hoped for. Great finish, clean details, and premium feel.</p>
+          <p class="author">Rico P.</p>
+        </article>
+        <article class="card" aria-label="Customer review by Lea D.">
+          <div class="stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <h3>Purposeful shopping experience</h3>
+          <p>This shop makes it easy to support local artistry while finding gifts that still look modern and stylish.</p>
+          <p class="author">Lea D.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

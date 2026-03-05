@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>As Seen On Scroll</title>
+<style>
+  :root {
+    --item-w: 210px;
+    --item-h: 92px;
+    --logo-h: 56px;
+    --gap: 22px;
+    --speed: 28s;
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    overflow: hidden;
+  }
+
+  body {
+    font-family: "Poppins", "Trebuchet MS", "Segoe UI", sans-serif;
+    color: #1f1f1f;
+  }
+
+  .seen-shell {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 10px 8px;
+  }
+
+  .heading {
+    margin: 0;
+    font-size: clamp(1rem, 2vw, 1.7rem);
+    line-height: 1.1;
+    letter-spacing: 0.4px;
+    padding-left: 2px;
+  }
+
+  .marquee-shell {
+    width: 100%;
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  }
+
+  .marquee-track {
+    width: max-content;
+    display: flex;
+    align-items: center;
+    gap: var(--gap);
+    animation: media-scroll var(--speed) linear infinite;
+    will-change: transform;
+  }
+
+  .outlet {
+    width: var(--item-w);
+    height: var(--item-h);
+    border-radius: 14px;
+    border: 1px solid rgba(20, 20, 20, 0.22);
+    text-decoration: none;
+    color: #222;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    background: rgba(255, 255, 255, 0.07);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+    padding: 8px 10px;
+    box-sizing: border-box;
+  }
+
+  .outlet:hover {
+    transform: translateY(-2px) scale(1.01);
+    border-color: rgba(20, 20, 20, 0.45);
+  }
+
+  .outlet img {
+    max-width: 100%;
+    height: var(--logo-h);
+    object-fit: contain;
+    display: block;
+    filter: grayscale(100%);
+  }
+
+  @keyframes media-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (max-width: 768px) {
+    :root {
+      --item-w: 170px;
+      --item-h: 80px;
+      --logo-h: 45px;
+      --gap: 16px;
+      --speed: 22s;
+    }
+  }
+</style>
+</head>
+<body>
+  <section class="seen-shell" aria-label="Featured media outlets">
+    <h2 class="heading">As Seen On</h2>
+    <div class="marquee-shell">
+      <div class="marquee-track">
+        <a class="outlet" href="https://www.cnnphilippines.com/" target="_blank" rel="noopener noreferrer" aria-label="CNN Philippines">
+          <img src="./as-seen-on-logos/cnn-philippines.svg" alt="CNN Philippines logo" loading="lazy" />
+        </a>
+        <a class="outlet" href="https://www.independentinvestor.com/" target="_blank" rel="noopener noreferrer" aria-label="Independent Investor">
+          <img src="./as-seen-on-logos/independent-investor.png" alt="Independent Investor logo" loading="lazy" />
+        </a>
+        <a class="outlet" href="https://www.wheninmanila.com/" target="_blank" rel="noopener noreferrer" aria-label="When In Manila">
+          <img src="./as-seen-on-logos/when-in-manila.png" alt="When In Manila logo" loading="lazy" />
+        </a>
+        <a class="outlet" href="https://mb.com.ph/" target="_blank" rel="noopener noreferrer" aria-label="Manila Bulletin">
+          <img src="./as-seen-on-logos/manila-bulletin.png" alt="Manila Bulletin logo" loading="lazy" />
+        </a>
+        <a class="outlet" href="https://www.bworldonline.com/" target="_blank" rel="noopener noreferrer" aria-label="BusinessWorld">
+          <img src="./as-seen-on-logos/businessworld.png" alt="BusinessWorld logo" loading="lazy" />
+        </a>
+
+        <a class="outlet" href="https://www.cnnphilippines.com/" target="_blank" rel="noopener noreferrer" aria-label="CNN Philippines">
+          <img src="./as-seen-on-logos/cnn-philippines.svg" alt="CNN Philippines logo" loading="lazy" />
+        </a>
+        <a class="outlet" href="https://www.independentinvestor.com/" target="_blank" rel="noopener noreferrer" aria-label="Independent Investor">
+          <img src="./as-seen-on-logos/independent-investor.png" alt="Independent Investor logo" loading="lazy" />
+        </a>
+        <a class="outlet" href="https://www.wheninmanila.com/" target="_blank" rel="noopener noreferrer" aria-label="When In Manila">
+          <img src="./as-seen-on-logos/when-in-manila.png" alt="When In Manila logo" loading="lazy" />
+        </a>
+        <a class="outlet" href="https://mb.com.ph/" target="_blank" rel="noopener noreferrer" aria-label="Manila Bulletin">
+          <img src="./as-seen-on-logos/manila-bulletin.png" alt="Manila Bulletin logo" loading="lazy" />
+        </a>
+        <a class="outlet" href="https://www.bworldonline.com/" target="_blank" rel="noopener noreferrer" aria-label="BusinessWorld">
+          <img src="./as-seen-on-logos/businessworld.png" alt="BusinessWorld logo" loading="lazy" />
+        </a>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

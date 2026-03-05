@@ -1,0 +1,72 @@
+﻿[
+    {
+        "Name":  "Rags2Riches",
+        "File":  "rags2riches.png",
+        "Source":  "https://www.rags2riches.ph/cdn/shop/files/R2R-Black-Logo-Lockup.png?v=1713340997\u0026width=900",
+        "Status":  "ok",
+        "Bytes":  26439
+    },
+    {
+        "Name":  "ANTHILL Fabrics",
+        "File":  "anthill-fabrics.png",
+        "Source":  "https://anthillfabrics.com/cdn/shop/files/Frame_55_468x269.png?v=1626285804",
+        "Status":  "ok",
+        "Bytes":  62426
+    },
+    {
+        "Name":  "HABI Textile Council",
+        "File":  "habi.svg",
+        "Source":  "https://www.habiphilippinetextilecouncil.com/cdn/shop/files/Habi_Logo.svg?v=16941643108474227897",
+        "Status":  "ok",
+        "Bytes":  2014463
+    },
+    {
+        "Name":  "ECHOstore",
+        "File":  "echostore.png",
+        "Source":  "https://echostore.ph/cdn/shop/files/ECHOstore-Logo_180x.png?v=1613540906",
+        "Status":  "ok",
+        "Bytes":  10024
+    },
+    {
+        "Name":  "Likhaan",
+        "File":  "likhaan.png",
+        "Source":  "https://likhaan.com/cdn/shop/files/Black-Logo-Wordmark-Only.png?v=1669206556",
+        "Status":  "ok",
+        "Bytes":  16527
+    },
+    {
+        "Name":  "Bambike",
+        "File":  "bambike.png",
+        "Source":  "https://static.wixstatic.com/media/774c08_620e614dccec46889836a49d59c72d0a~mv2.png/v1/fill/w_192,h_192,lg_1,usm_0.66_1.00_0.01/774c08_620e614dccec46889836a49d59c72d0a~mv2.png",
+        "Status":  "ok",
+        "Bytes":  9653
+    },
+    {
+        "Name":  "Human Nature",
+        "File":  "human-nature.gif",
+        "Source":  "https://prod-humanheartnature.b-cdn.net/buy/static/media/hhnlogo_10.932d60c2c7a1b091346c.gif",
+        "Status":  "ok",
+        "Bytes":  78017
+    },
+    {
+        "Name":  "Cultural Center of the Philippines",
+        "File":  "cultural-center-ph.svg",
+        "Source":  "https://upload.wikimedia.org/wikipedia/commons/5/57/CulturalCenterPH.svg",
+        "Status":  "ok",
+        "Bytes":  18370
+    },
+    {
+        "Name":  "National Museum of the Philippines",
+        "File":  "national-museum-ph.svg",
+        "Source":  "https://upload.wikimedia.org/wikipedia/commons/4/46/National_Museum_of_the_Philippines.svg",
+        "Status":  "ok",
+        "Bytes":  120365
+    },
+    {
+        "Name":  "Intramuros Administration",
+        "File":  "intramuros-administration.svg",
+        "Source":  "https://upload.wikimedia.org/wikipedia/commons/b/bd/Logo_of_the_Intramuros_Administration.svg",
+        "Status":  "ok",
+        "Bytes":  23771
+    }
+]

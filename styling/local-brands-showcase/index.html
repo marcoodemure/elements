@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Philippine Artisan And Cultural Brands Marquee</title>
+<style>
+  :root {
+    --logo-h: 56px;
+    --item-w: 180px;
+    --gap: 28px;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    overflow: hidden;
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .marquee-shell {
+    width: 100%;
+    overflow: hidden;
+    padding: 10px 0;
+    mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  }
+
+  .marquee-track {
+    display: flex;
+    align-items: center;
+    width: max-content;
+    gap: var(--gap);
+    animation: scroll-right 36s linear infinite;
+    will-change: transform;
+  }
+
+  .marquee-shell:hover .marquee-track {
+    animation-play-state: paused;
+  }
+
+  .brand {
+    width: var(--item-w);
+    height: 86px;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    text-decoration: none;
+    padding: 12px 10px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .brand:hover {
+    transform: translateY(-2px) scale(1.02);
+    opacity: 1;
+  }
+
+  .brand img {
+    max-width: 100%;
+    height: var(--logo-h);
+    object-fit: contain;
+    display: block;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  @keyframes scroll-right {
+    from { transform: translateX(-50%); }
+    to { transform: translateX(0%); }
+  }
+
+  @media (max-width: 768px) {
+    :root {
+      --item-w: 145px;
+      --logo-h: 46px;
+      --gap: 20px;
+    }
+    .marquee-track {
+      animation-duration: 28s;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="marquee-shell">
+    <div class="marquee-track" id="track"></div>
+  </div>
+
+<script>
+  const brands = [
+    { name: "Rags2Riches", file: "rags2riches.png", url: "https://www.rags2riches.ph/" },
+    { name: "ANTHILL Fabrics", file: "anthill-fabrics.png", url: "https://anthillfabrics.com/" },
+    { name: "HABI Textile Council", file: "habi.svg", url: "https://www.habiphilippinetextilecouncil.com/" },
+    { name: "ECHOstore", file: "echostore.png", url: "https://echostore.ph/" },
+    { name: "Likhaan", file: "likhaan.png", url: "https://likhaan.com/" },
+    { name: "Bambike", file: "bambike.png", url: "https://www.bambike.com/" },
+    { name: "Human Nature", file: "human-nature.gif", url: "https://humanheartnature.com/" },
+    { name: "Cultural Center of the Philippines", file: "cultural-center-ph.svg", url: "https://culturalcenter.gov.ph/" },
+    { name: "National Museum of the Philippines", file: "national-museum-ph.svg", url: "https://www.nationalmuseum.gov.ph/" },
+    { name: "Intramuros Administration", file: "intramuros-administration.svg", url: "https://intramuros.gov.ph/" }
+  ];
+
+  const track = document.getElementById("track");
+
+  function render(items) {
+    const fragment = document.createDocumentFragment();
+
+    items.forEach((brand) => {
+      const link = document.createElement("a");
+      link.className = "brand";
+      link.href = brand.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.setAttribute("aria-label", brand.name);
+      link.title = brand.name;
+
+      const img = document.createElement("img");
+      img.src = `./logos/${brand.file}`;
+      img.alt = `${brand.name} logo`;
+      img.loading = "lazy";
+
+      link.appendChild(img);
+      fragment.appendChild(link);
+    });
+
+    track.appendChild(fragment);
+  }
+
+  // Duplicate set for seamless infinite marquee.
+  render(brands);
+  render(brands);
+</script>
+</body>
+</html>

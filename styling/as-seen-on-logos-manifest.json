@@ -1,0 +1,42 @@
+﻿[
+    {
+        "Name":  "CNN Philippines",
+        "File":  "cnn-philippines.svg",
+        "Site":  "https://www.cnnphilippines.com/",
+        "Source":  "https://upload.wikimedia.org/wikipedia/commons/4/48/CNN_Philippines_Logo.svg",
+        "Status":  "ok",
+        "Bytes":  6305
+    },
+    {
+        "Name":  "Independent Investor",
+        "File":  "independent-investor.png",
+        "Site":  "https://www.independentinvestor.com/",
+        "Source":  "https://www.independentinvestor.com/wp-content/uploads/logo.png",
+        "Status":  "ok",
+        "Bytes":  15561
+    },
+    {
+        "Name":  "When In Manila",
+        "File":  "when-in-manila.png",
+        "Site":  "https://www.wheninmanila.com/",
+        "Source":  "https://www.wheninmanila.com/wp-content/uploads/2025/03/wimlogonew-removebg-preview-1.png",
+        "Status":  "ok",
+        "Bytes":  203036
+    },
+    {
+        "Name":  "Manila Bulletin",
+        "File":  "manila-bulletin.png",
+        "Site":  "https://mb.com.ph/",
+        "Source":  "https://mb.com.ph/manilabulletin/uploads/global_files/logo-manila-b.png?v=1",
+        "Status":  "ok",
+        "Bytes":  17633
+    },
+    {
+        "Name":  "BusinessWorld",
+        "File":  "businessworld.png",
+        "Site":  "https://www.bworldonline.com/",
+        "Source":  "https://www.bworldonline.com/wp-content/uploads/2021/04/bw-logo-1.png",
+        "Status":  "ok",
+        "Bytes":  14807
+    }
+]
